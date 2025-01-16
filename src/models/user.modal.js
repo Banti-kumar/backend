@@ -35,7 +35,7 @@ const userSchema = new Schema(
     watchHistory: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Video",
+        ref: "Video", // reference to Video model
       },
     ],
     password: {
@@ -52,22 +52,28 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
+  // this is a middleware
+  // if password is not modified, skip the hashing
   if (!this.isModified("password")) {
     next();
   }
   try {
+    // generate salt and hash the password
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
   } catch (error) {
+    // if error occurs, pass it to the next middleware
     next(error);
   }
 });
 
+// this is a method of the userSchema for comparing password with hashed password in the database
 userSchema.methods.comparePassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+// this is a method of the userSchema for generating access token
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -83,6 +89,7 @@ userSchema.methods.generateAccessToken = function () {
   );
 };
 
+// this is a method of the userSchema for generating refresh token
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {

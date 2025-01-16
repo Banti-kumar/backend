@@ -34,7 +34,7 @@ const videoSchema = new Schema(
     },
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "User", // reference to User model
     },
   },
   {
@@ -42,6 +42,6 @@ const videoSchema = new Schema(
   }
 );
 
-videoSchema.plugin(mongooseAggregatePaginate);
+videoSchema.plugin(mongooseAggregatePaginate); // pagination plugin for mongoose models
 
 export default Video = mongoose.model("Video", videoSchema);
