@@ -15,4 +15,4 @@ app.use(express.json({ limit: "50mb", extended: true })); // json data limit 50m
 app.use(cookieParser({ extends: true })); // cookie parser
 app.use(express.urlencoded({ extended: true })); // urlencoded data
 
-export { app }; // export app
+export default app; // export app
