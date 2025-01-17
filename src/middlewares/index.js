@@ -25,6 +25,9 @@ const uploadOnCloudinary = async (localfilePath) => {
 
 export default uploadOnCloudinary;
 
+
+// write this file in publice folder 
+
 import multer from "multer";
 
 const storage = multer.diskStorage({
