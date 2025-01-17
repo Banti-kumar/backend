@@ -1,12 +1,16 @@
-const asyncHandler = (fn) => async (req, res, next) => {
-  // fn is the function that we want to run
-  try {
-    // try to run the function
-    await fn(req, res, next); // run the function
-  } catch (error) {
-    // if there is an error
-    res.status(500).json({ success: false, message: error.message }); // send a 500 status code and the error message
-  }
+// Higher-order function to wrap request handlers and handle async errors.
+const asyncHandler = (requestHandler) => {
+    return async (req, res, next) => {
+        try {
+            // Await the execution of the request handler to handle async code
+            await requestHandler(req, res, next);
+        } catch (err) {
+            // If an error occurs during the execution of the handler, pass it to the error handler middleware
+            next(err);
+        }
+    };
 };
 
-export { asyncHandler }; // export the asyncHandler function
+export default asyncHandler; // Export the asyncHandler function for use in routes
+
+
